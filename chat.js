@@ -1,27 +1,36 @@
-export function runTextInference() {
+export async function runTextInference() {
     const input = document.getElementById('textInput');
     const log = document.getElementById('textTerminal');
     const txt = input.value.trim();
     if (!txt) return;
     
     input.value = "";
-    log.innerHTML += `\n\nUser: ${txt}\n\n[ACCESSING CYBER NETWORKS...]`;
-    
-    setTimeout(() => {
-        let systemResponse = "";
-        const lowerTxt = txt.toLowerCase();
+    log.innerHTML += `\n\nUser: ${txt}\n\n[ROUTING TO EXTERNAL CLOUD AI...]`;
+    log.scrollTop = log.scrollHeight;
 
-        if (lowerTxt.includes("hello") || lowerTxt.includes("hey")) {
-            systemResponse = "Connection established. AADI-STUDIO central mainframe initialized. Standing by for protocol optimization instructions.";
-        } else if (lowerTxt.includes("code") || lowerTxt.includes("program")) {
-            systemResponse = "Compiling development algorithms... Remember to structure your matrices cleanly into modules. Error reduction checks initialized successfully.";
-        } else if (lowerTxt.includes("who are you")) {
-            systemResponse = "I am the core logic matrix of Aadi Studio Pro AI—a secure sandbox environment executed entirely inside client storage arrays.";
-        } else {
-            systemResponse = `Analysis matrix for instruction cluster "${txt}" completed successfully. Network pipelines fully clean. Ready for next loop injection.`;
-        }
+    try {
+        // Fetching directly from an external high-speed computing cluster
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer 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", 
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "llama3-8b-8192", 
+                messages: [
+                    { role: "system", content: "You are the advanced cybernetic central mainframe AI of Aadi Studio Pro. Be sharp, brilliant, and technical." },
+                    { role: "user", content: txt }
+                ]
+            })
+        });
 
-        log.innerHTML = log.innerHTML.replace('[ACCESSING CYBER NETWORKS...]', `Aadi Core Matrix:\n🤖 ${systemResponse}`);
-        log.scrollTop = log.scrollHeight;
-    }, 700);
+        const data = await response.json();
+        const aiReply = data.choices[0].message.content;
+
+        log.innerHTML = log.innerHTML.replace('[ROUTING TO EXTERNAL CLOUD AI...]', `Aadi External Core:\n🤖 ${aiReply}`);
+    } catch (error) {
+        log.innerHTML = log.innerHTML.replace('[ROUTING TO EXTERNAL CLOUD AI...]', `[!] Connection Error: Uplink pipeline timed out.`);
+    }
+    log.scrollTop = log.scrollHeight;
 }

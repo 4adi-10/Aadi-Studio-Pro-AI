@@ -1,48 +1,42 @@
-export function runVisionInference() {
+export async function runVisionInference() {
     const log = document.getElementById('visionTerminal');
     const promptVal = document.getElementById('visionInput').value.trim();
     const canvas = document.getElementById('creativeCanvas');
     const ctx = canvas.getContext('2d');
     
     if(!promptVal) return;
-    log.innerHTML = `[COMPUTING VISUAL NODE MAP] Drawing vector data vectors for "${promptVal}"...`;
+    log.innerHTML = `[CONNECTING TO IMAGINATION ENGINES...] Fetching true external render paths...`;
     
-    ctx.fillStyle = '#08031a';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    const iterations = Math.min(60 + promptVal.length * 6, 250);
-    for (let i = 0; i < iterations; i++) {
-        let xPos = Math.abs(Math.sin(i * promptVal.length + 3)) * canvas.width;
-        let yPos = Math.abs(Math.cos(i * 1.5)) * canvas.height;
-        let radius = Math.abs(Math.sin(i)) * 5 + 1;
+    try {
+        // Generating a completely unique layout via poll seeds
+        const randomSeed = Math.floor(Math.random() * 1000000);
+        const externalImageUrl = `https://image.pollinations.ai/p/${encodeURIComponent(promptVal)}?width=300&height=300&seed=${randomSeed}&nologo=true`;
         
-        ctx.beginPath();
-        ctx.arc(xPos, yPos, radius, 0, Math.PI * 2);
+        const img = new Image();
+        img.crossOrigin = "anonymous"; // Prevents security errors during downloading
+        img.src = externalImageUrl;
         
-        if (i % 3 === 0) {
-            ctx.fillStyle = 'rgba(122, 0, 255, 0.75)';
-        } else if (i % 3 === 1) {
-            ctx.fillStyle = 'rgba(176, 85, 255, 0.9)';
-        } else {
-            ctx.fillStyle = 'rgba(0, 255, 170, 0.85)';
-        }
-        ctx.fill();
+        img.onload = function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            log.innerHTML = `✨ External generation success. Graphics rendered onto canvas layout.`;
+            document.getElementById('downloadBtn').disabled = false;
+        };
+        
+        img.onerror = function() {
+            log.innerHTML = `[!] Error loading external pixel asset vector layout.`;
+        };
+        
+    } catch (e) {
+        log.innerHTML = `[!] Critical pipeline communication breakdown.`;
     }
-    
-    ctx.font = 'bold 12px "Space Mono", monospace';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.fillText(promptVal.toUpperCase(), canvas.width / 2, canvas.height - 25);
-    
-    log.innerHTML = `✨ Render complete. Custom graphic matrix compilation success.`;
-    document.getElementById('downloadBtn').disabled = false;
 }
 
 export function downloadCanvasArt() {
     const canvas = document.getElementById('creativeCanvas');
     const imgUrl = canvas.toDataURL("image/png");
     const linkElement = document.createElement('a');
-    linkElement.download = 'aadi-studio-design.png';
+    linkElement.download = 'aadi-pro-external-art.png';
     linkElement.href = imgUrl;
     linkElement.click();
 }
