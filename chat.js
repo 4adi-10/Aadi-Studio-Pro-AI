@@ -1,4 +1,3 @@
-// Aadi Studio Pro AI - Chat Module Array
 export function runTextInference() {
     const input = document.getElementById('textInput');
     const log = document.getElementById('textTerminal');
@@ -8,7 +7,6 @@ export function runTextInference() {
     input.value = "";
     log.innerHTML += `\n\nUser: ${txt}\n\n[ACCESSING CYBER NETWORKS...]`;
     
-    // Custom hacker/coder generation answers
     setTimeout(() => {
         let systemResponse = "";
         const lowerTxt = txt.toLowerCase();
@@ -23,7 +21,6 @@ export function runTextInference() {
             systemResponse = `Analysis matrix for instruction cluster "${txt}" completed successfully. Network pipelines fully clean. Ready for next loop injection.`;
         }
 
-        // Replace the computing text with the final response
         log.innerHTML = log.innerHTML.replace('[ACCESSING CYBER NETWORKS...]', `Aadi Core Matrix:\n🤖 ${systemResponse}`);
         log.scrollTop = log.scrollHeight;
     }, 700);

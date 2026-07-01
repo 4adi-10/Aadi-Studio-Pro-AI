@@ -7,11 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght=900&family=Plus+Jakarta+Sans:wght=500;700&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
-<div class="bg-particles" id="bgCanvasContainer"></div>
 
 <div class="studio-container">
     <div class="panel-side">
@@ -20,7 +18,7 @@
         <div class="terminal-box" id="textTerminal">System Ready. Matrix Persona online. Initiate communication array...</div>
         <div class="control-dock">
             <input type="text" id="textInput" placeholder="Send prompt matrix...">
-            <button onclick="runTextInference()">Run</button>
+            <button id="runChatBtn">Run</button>
         </div>
     </div>
 
@@ -33,8 +31,8 @@
         <div class="terminal-box" id="visionTerminal" style="height: 60px; flex: none;">Canvas System Idle.</div>
         <div class="control-dock">
             <input type="text" id="visionInput" placeholder="Describe layout canvas pattern...">
-            <button onclick="runVisionInference()">Draw</button>
-            <button id="downloadBtn" onclick="downloadCanvasArt()" style="background: #00ffaa; color: #000;" disabled>Save Art</button>
+            <button id="drawVisionBtn">Draw</button>
+            <button id="downloadBtn" style="background: #00ffaa; color: #000;" disabled>Save Art</button>
         </div>
     </div>
 </div>
@@ -43,12 +41,12 @@
     import { runTextInference } from './chat.js';
     import { runVisionInference, downloadCanvasArt } from './vision.js';
 
-    // Exporting them to the window namespace so HTML click triggers work flawlessly
-    window.runTextInference = runTextInference;
-    window.runVisionInference = runVisionInference;
-    window.downloadCanvasArt = downloadCanvasArt;
+    // Event listeners connect our modular code directly to the button clicks safely
+    document.getElementById('runChatBtn').addEventListener('click', runTextInference);
+    document.getElementById('drawVisionBtn').addEventListener('click', runVisionInference);
+    document.getElementById('downloadBtn').addEventListener('click', downloadCanvasArt);
 
-    // Small ambient startup block for empty canvas state
+    // Initial setup for blank canvas element
     const canvas = document.getElementById('creativeCanvas');
     const ctx = canvas.getContext('2d');
     ctx.fillStyle = '#060212';
