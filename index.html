@@ -1,57 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadi Studio Pro AI</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght=900&family=Plus+Jakarta+Sans:wght=500;700&family=Space+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <title>Aadi AI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="studio-container">
-    <div class="panel-side">
-        <h1>Aadi Studio Chat</h1>
-        <div class="subtitle">CYBERNETIC PERSONALITY LAYER</div>
-        <div class="terminal-box" id="textTerminal">System Ready. Matrix Persona online. Initiate communication array...</div>
-        <div class="control-dock">
-            <input type="text" id="textInput" placeholder="Send prompt matrix...">
-            <button id="runChatBtn">Run</button>
-        </div>
-    </div>
+<div class="chat">
 
-    <div class="panel-side">
-        <h1>Aadi Studio Vision</h1>
-        <div class="subtitle">PROCEDURAL GRAPHIC RENDERER</div>
-        <div class="canvas-area">
-            <canvas id="creativeCanvas" width="300" height="300"></canvas>
-        </div>
-        <div class="terminal-box" id="visionTerminal" style="height: 60px; flex: none;">Canvas System Idle.</div>
-        <div class="control-dock">
-            <input type="text" id="visionInput" placeholder="Describe layout canvas pattern...">
-            <button id="drawVisionBtn">Draw</button>
-            <button id="downloadBtn" style="background: #00ffaa; color: #000;" disabled>Save Art</button>
-        </div>
-    </div>
+<h1>Aadi AI</h1>
+
+<div id="messages"></div>
+
+<div class="bottom">
+
+<input
+id="input"
+placeholder="Ask me anything..."
+autocomplete="off">
+
+<button onclick="sendMessage()">
+Send
+</button>
+
 </div>
 
-<script type="module">
-    import { runTextInference } from './chat.js';
-    import { runVisionInference, downloadCanvasArt } from './vision.js';
+</div>
 
-    // Event listeners connect our modular code directly to the button clicks safely
-    document.getElementById('runChatBtn').addEventListener('click', runTextInference);
-    document.getElementById('drawVisionBtn').addEventListener('click', runVisionInference);
-    document.getElementById('downloadBtn').addEventListener('click', downloadCanvasArt);
-
-    // Initial setup for blank canvas element
-    const canvas = document.getElementById('creativeCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#060212';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
