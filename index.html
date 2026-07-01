@@ -4,189 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aadi Studio Pro AI</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght=900&family=Plus+Jakarta+Sans:wght=500;700&family=Space+Mono&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg: #030008;
-            --panel: rgba(20, 10, 35, 0.4);
-            --border: rgba(122, 0, 255, 0.3);
-            --accent: #7a00ff;
-            --neon: #b055ff;
-            --text: #ffffff;
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100vh;
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        .studio-container {
-            width: 95%; max-width: 850px; height: 85vh;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            backdrop-filter: blur(20px);
-            padding: 24px; display: flex; gap: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        .panel-side {
-            flex: 1; display: flex; flex-direction: column; height: 100%;
-        }
-
-        h1 {
-            font-family: 'Cabinet Grotesk', sans-serif;
-            font-size: 1.8rem; margin: 0; text-align: center;
-            background: linear-gradient(180deg, #fff, var(--neon));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-family: 'Space Mono', monospace; font-size: 0.65rem;
-            color: var(--neon); text-align: center; margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        .terminal-box {
-            flex: 1; background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(122, 0, 255, 0.15);
-            border-radius: 14px; padding: 16px;
-            overflow-y: auto; font-family: 'Space Mono', monospace;
-            font-size: 0.8rem; line-height: 1.5; color: #cbd5e1;
-            white-space: pre-wrap;
-        }
-
-        .canvas-area {
-            width: 100%; height: 250px; background: #000;
-            border-radius: 14px; border: 1px dashed var(--border);
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; margin-bottom: 10px;
-        }
-
-        .canvas-area canvas {
-            max-width: 100%; max-height: 100%;
-            border-radius: 8px;
-        }
-
-        .control-dock { display: flex; gap: 10px; margin-top: 12px; }
-
-        input[type="text"] {
-            flex: 1; background: rgba(0,0,0,0.4);
-            border: 1px solid var(--border); border-radius: 12px;
-            padding: 12px; color: white; outline: none;
-            font-family: inherit; font-size: 0.9rem;
-        }
-
-        button {
-            background: var(--accent); color: white; border: none;
-            padding: 12px 20px; border-radius: 12px; font-weight: bold;
-            cursor: pointer; transition: 0.2s; font-size: 0.85rem;
-        }
-        button:disabled { background: #221533; color: #666; cursor: not-allowed; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="bg-particles" id="bgCanvasContainer"></div>
 
 <div class="studio-container">
     <div class="panel-side">
         <h1>Aadi Studio Chat</h1>
-        <div class="subtitle">NATIVE TEXT LAYER</div>
-        <div class="terminal-box" id="textTerminal">System Online. Ready to process user arrays...</div>
+        <div class="subtitle">CYBERNETIC PERSONALITY LAYER</div>
+        <div class="terminal-box" id="textTerminal">System Ready. Matrix Persona online. Initiate communication array...</div>
         <div class="control-dock">
-            <input type="text" id="textInput" placeholder="Send a message to your matrix...">
-            <button id="sendTextBtn" onclick="runTextInference()">Run</button>
+            <input type="text" id="textInput" placeholder="Send prompt matrix...">
+            <button onclick="runTextInference()">Run</button>
         </div>
     </div>
 
     <div class="panel-side">
         <h1>Aadi Studio Vision</h1>
-        <div class="subtitle">NATIVE PIXEL MATRIX</div>
-        <div class="canvas-area" id="canvasWrapper">
+        <div class="subtitle">PROCEDURAL GRAPHIC RENDERER</div>
+        <div class="canvas-area">
             <canvas id="creativeCanvas" width="300" height="300"></canvas>
         </div>
-        <div class="terminal-box" id="visionTerminal" style="height: 80px; flex: none;">Core Idle. Ready to render graphic arrays...</div>
+        <div class="terminal-box" id="visionTerminal" style="height: 60px; flex: none;">Canvas System Idle.</div>
         <div class="control-dock">
-            <input type="text" id="visionInput" placeholder="Describe graphics...">
-            <button id="genImageBtn" onclick="runVisionInference()">Draw</button>
+            <input type="text" id="visionInput" placeholder="Describe layout canvas pattern...">
+            <button onclick="runVisionInference()">Draw</button>
+            <button id="downloadBtn" onclick="downloadCanvasArt()" style="background: #00ffaa; color: #000;" disabled>Save Art</button>
         </div>
     </div>
 </div>
 
-<script>
-    // Local processing fallback logic for zero-latency responses on any browser hardware
-    function runTextInference() {
-        const input = document.getElementById('textInput');
-        const log = document.getElementById('textTerminal');
-        const txt = input.value.trim();
-        if (!txt) return;
-        
-        input.value = "";
-        log.innerHTML = `User: ${txt}\n\n[ENGINE COMPILING RESPONSE...]`;
-        
-        setTimeout(() => {
-            log.innerHTML = `User: ${txt}\n\nLocal Core: Received instruction matrix for "${txt}". System architecture operating fully offline. Text nodes initialized.`;
-        }, 600);
-    }
+<script type="module">
+    import { runTextInference } from './chat.js';
+    import { runVisionInference, downloadCanvasArt } from './vision.js';
 
-    // Advanced Local Native Procedural Canvas Matrix Generator
-    function runVisionInference() {
-        const log = document.getElementById('visionTerminal');
-        const promptVal = document.getElementById('visionInput').value.trim();
-        const canvas = document.getElementById('creativeCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        if(!promptVal) return;
-        log.innerHTML = `[COMPUTING VISUAL VECTOR] Rendering matrix blocks for "${promptVal}"...`;
-        
-        // Reset the background canvas
-        ctx.fillStyle = '#0a0314';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Let's create an abstract matrix particle design algorithm based on text length
-        const particles = Math.min(50 + promptVal.length * 5, 200);
-        
-        for (let i = 0; i < particles; i++) {
-            // Mathematical noise seed based on prompt characters
-            let randomSeedX = Math.sin(i * promptVal.length) * 150 + 150;
-            let randomSeedY = Math.cos(i + promptVal.length) * 150 + 150;
-            let radius = Math.abs(Math.sin(i)) * 6;
-            
-            ctx.beginPath();
-            ctx.arc(randomSeedX, randomSeedY, radius, 0, Math.PI * 2);
-            
-            // Neon matrix style colors
-            if (i % 2 === 0) {
-                ctx.fillStyle = 'rgba(122, 0, 255, 0.6)'; // Accent Purple
-            } else {
-                ctx.fillStyle = 'rgba(176, 85, 255, 0.8)'; // Neon Cyan/Pink highlight
-            }
-            ctx.fill();
-        }
-        
-        // Print the prompt text natively inside the generated art layer
-        ctx.font = 'bold 14px "Space Mono", monospace';
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.fillText(promptVal.toUpperCase(), 150, 275);
-        
-        log.innerHTML = `✨ Process complete. Dynamic graphic array created natively.`;
-    }
-    
-    // Auto fill canvas layout on startup
+    // Exporting them to the window namespace so HTML click triggers work flawlessly
+    window.runTextInference = runTextInference;
+    window.runVisionInference = runVisionInference;
+    window.downloadCanvasArt = downloadCanvasArt;
+
+    // Small ambient startup block for empty canvas state
     const canvas = document.getElementById('creativeCanvas');
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#05020a';
+    ctx.fillStyle = '#060212';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 </script>
 
